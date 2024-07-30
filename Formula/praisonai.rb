@@ -14,7 +14,11 @@ class Praisonai < Formula
         virtualenv_install_with_resources
 
         # Install the package and dependencies using poetry
+        system "poetry", "config", "virtualenvs.create", "false"
         system "poetry", "install", "--no-dev", "--no-interaction"
+
+        # Copy the entry point script to the bin directory
+        bin.install Dir["#{libexec}/bin/*"]
     end
 
     test do
