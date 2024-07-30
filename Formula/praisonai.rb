@@ -8,13 +8,16 @@ class Praisonai < Formula
     license "MIT"
   
     depends_on "python@3.10"
-  
+    depends_on "poetry"
+
     def install
-      virtualenv_install_with_resources
+        virtualenv_install_with_resources
+
+        # Install the package and dependencies using poetry
+        system "poetry", "install", "--no-dev", "--no-interaction"
     end
-  
+
     test do
-      system "#{bin}/praisonai", "--version"
+        system "#{bin}/praisonai", "--version"
     end
-  end
-  
+end
