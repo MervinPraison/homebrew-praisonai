@@ -11,16 +11,23 @@ class Praisonai < Formula
     depends_on "poetry"
 
     def install
-        virtualenv_install_with_resources
-
-        # Install the package and dependencies using poetry
-        system "poetry", "config", "virtualenvs.create", "false"
-        system "poetry", "install", "--no-dev", "--no-interaction"
-
-        # Copy the entry point script to the bin directory
-        bin.install Dir["#{libexec}/bin/*"]
+        # Create a virtual environment
+        venv = virtualenv_create(libexec, "python3.10")
+    
+        # Install poetry inside the virtual environment
+        venv.pip_install "poetry"
+    
+        # Use poetry to install dependencies and the package
+        system libexec/"bin/poetry", "install", "--no-dev", "--no-interaction", "--no-root"
+    
+        # Install the package itself
+        system libexec/"bin/pip", "install", "."
+    
+        # Symlink the binaries
+        bin.install Dir[libexec/"bin/*"]
+        bin.env_script_all_files(libexec/"bin", PATH: "#{libexec}/bin:$PATH")
     end
-
+    
     test do
         system "#{bin}/praisonai", "--version"
     end
