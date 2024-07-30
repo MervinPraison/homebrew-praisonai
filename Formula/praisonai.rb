@@ -7,7 +7,7 @@ class Praisonai < Formula
     sha256 "1828fb9227d10f991522c3f24f061943a254b667196b40b1a3e4a54a8d30ce32"  # Replace with actual SHA256 checksum
     license "MIT"
   
-    depends_on "python@3.9"
+    depends_on "python@3.10"
   
     def install
       virtualenv_install_with_resources
